@@ -65,6 +65,24 @@ function M.rename_component()
       inputs.input("Rename component", pascal_old_component, function(input)
         input = input:gsub("^%l", string.upper)
         local dashed_component_name = input:gsub("(%l)(%u)", "%1-%2"):lower()
+
+        local parent_folder_path, _ = utils.split_path(node.path)
+        local new_folder_path = parent_folder_path .. utils.path_separator .. dashed_component_name
+        print(new_folder_path)
+
+        uv.fs_rename(node.path, new_folder_path)
+
+        for _, client in ipairs(clients) do
+          client.notify("workspace/didRenameFiles", {
+            files = {
+              {
+                oldUri = vim.uri_from_fname(node.path),
+                newUri = vim.uri_from_fname(new_folder_path),
+              },
+            },
+          })
+        end
+
         for _, sub_node in ipairs(state.tree:get_nodes(node:get_id())) do
           local hit = string.find(sub_node.name, (dashed_old_component .. ".component."))
           if hit ~= nil then
@@ -75,10 +93,6 @@ function M.rename_component()
             local oldUri = sub_node.path
 
             uv.fs_rename(oldUri, newUri, function(err)
-              if err ~= nil then
-                -- Show error
-              end
-
               -- INFO: Notify LSP
               -- clients is an array of Client[]. This means that ipairs will return the index as the key and client as the value
               for _, client in ipairs(clients) do
@@ -107,11 +121,9 @@ function M.rename_component()
 
               local lines = vim.api.nvim_buf_get_lines(bufnr, 0, -1, false)
               local content = table.concat(lines)
-              local selector = content:match([[
-                selector.-['|"](.-)['|"]
-              ]])
 
-              print("CONTENT: " .. content)
+              local regex = "selector.-['|\"](.-)['|\"]"
+              local selector = content:match(regex)
 
               local root_dir
 
@@ -122,29 +134,29 @@ function M.rename_component()
                 end
               end
 
-              -- vim.fn.system(
-              --   "cd "
-              --     .. root_dir
-              --     .. "&& rg '"
-              --     .. selector
-              --     .. "' -l | xargs sed -i 's/<"
-              --     .. selector
-              --     .. ">/<"
-              --     .. dashed_component_name
-              --     .. ">/g'"
-              -- )
-              --
-              -- vim.fn.system(
-              --   "cd "
-              --     .. root_dir
-              --     .. "&& rg '"
-              --     .. selector
-              --     .. "' -l | xargs sed -i 's/</"
-              --     .. selector
-              --     .. ">/</"
-              --     .. dashed_component_name
-              --     .. ">/g'"
-              -- )
+              vim.fn.system(
+                "cd "
+                  .. root_dir
+                  .. "&& rg '"
+                  .. selector
+                  .. "' -l | xargs sed -i 's/<"
+                  .. selector
+                  .. ">/<"
+                  .. dashed_component_name
+                  .. ">/g'"
+              )
+
+              vim.fn.system(
+                "cd "
+                  .. root_dir
+                  .. "&& rg '"
+                  .. selector
+                  .. "' -l | xargs sed -i 's/<\\/"
+                  .. selector
+                  .. ">/<\\/"
+                  .. dashed_component_name
+                  .. ">/g'"
+              )
 
               vim.api.nvim_command([[:%s/selector.\+\zs]] .. dashed_old_component .. [[\ze/]] .. dashed_component_name)
               vim.api.nvim_command(
