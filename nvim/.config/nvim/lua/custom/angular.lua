@@ -117,7 +117,9 @@ function M.rename_component()
                   local lines = vim.api.nvim_buf_get_lines(bufnr, 0, -1, false)
                   local content = table.concat(lines)
                   local selector = content:match("selector.-['|\"](.-)['|\"]")
-                  local selector_prefix = content:match("selector.-['|\"](.-)%-" .. dashed_old_component .. "['|\"]")
+
+                  local selector_prefix =
+                    content:match("selector.-['|\"](.-)%-" .. dashed_old_component:gsub("-", "%%-") .. "['|\"]")
 
                   local stylesheet = content:match("styleUrl.-['|\"](.-)['|\"]")
                   local stylesheet_extension = stylesheet:match(".+(%..-)$")
@@ -146,36 +148,18 @@ function M.rename_component()
                       .. stylesheet_extension
                   )
 
-                  -- INFO: PERL Replacement in 1 command
-                  -- Match Regex: <(\/?)app-hola([^>]*)>
-                  -- Subtitution Regex: <\1app-hola-migo\2>
-
                   vim.fn.system(
                     "cd "
                       .. root_dir
                       .. "&& rg '"
                       .. selector
-                      .. "' -l | xargs sed -E -i 's/<"
+                      .. "' -l | xargs perl -i -0777 -pe 's/<(\\/?)"
                       .. selector
-                      .. "([^>|\\n]*)>/<"
+                      .. "([^>]*)>/<\\1"
                       .. selector_prefix
                       .. "-"
                       .. dashed_component_name
-                      .. "\\1>/g'"
-                  )
-
-                  vim.fn.system(
-                    "cd "
-                      .. root_dir
-                      .. "&& rg '"
-                      .. selector
-                      .. "' -l | xargs sed -i 's/<\\/"
-                      .. selector
-                      .. ">/<\\/"
-                      .. selector_prefix
-                      .. "-"
-                      .. dashed_component_name
-                      .. ">/g'"
+                      .. "\\2>/mg'"
                   )
 
                   vim.api.nvim_command("w!")
