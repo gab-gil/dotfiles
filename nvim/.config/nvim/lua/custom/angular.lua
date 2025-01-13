@@ -42,9 +42,12 @@ end
 
 function M.rename_component()
   local state = require("neo-tree.sources.manager").get_state("filesystem")
+  local fs = require("neo-tree.sources.filesystem")
   local node = state.tree:get_node()
 
   if node and node.path and node.type == "directory" then
+    local node_expander = require("neo-tree.sources.common.node_expander")
+    node_expander.expand_directory_recursively(state, node, fs.prefetcher)
     for _, child in ipairs(state.tree:get_nodes(node:get_id())) do
       local index = string.find(child.name, "%.component%.ts$")
       if index == nil then
@@ -67,8 +70,6 @@ function M.rename_component()
         local dashed_component_name = input:gsub("(%l)(%u)", "%1-%2"):lower()
 
         local parent_folder_path, _ = utils.split_path(node.path)
-        local old_folder_path = node.path
-        local new_folder_path = parent_folder_path .. utils.path_separator .. dashed_component_name
 
         vim.fn.system("cd " .. parent_folder_path .. "&& mkdir " .. dashed_component_name)
 
