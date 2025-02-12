@@ -65,6 +65,9 @@ function M.rename_component()
         return c:upper()
       end)
 
+      -- TODO: Rename the component class before renaming the file path.
+      -- Otherwise it breaks in comopnents that refer it
+
       inputs.input("Rename component", pascal_old_component, function(input)
         input = input:gsub("^%l", string.upper)
         local dashed_component_name = input:gsub("(%l)(%u)", "%1-%2"):lower()
