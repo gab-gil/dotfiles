@@ -1,0 +1,64 @@
+{
+  "layer": "top",
+  "modules-left": ["hyprland/language", "hyprland/workspaces"],
+  "modules-center": [],
+  "modules-right": [
+    "network",
+    "wireplumber",
+    "bluetooth",
+    "battery",
+    "custom/notification",
+    "clock",
+  ],
+  "battery": {
+    "format": "{capacity}% {icon}",
+    "format-icons": ["", "", "", "", ""],
+  },
+  "clock": {
+    "format-alt": "{:%a, %d. %b  %H:%M}",
+  },
+  "network": {
+    "format": "󰤥",
+    "format-wifi": "󰤥",
+    "format-disconnected": "󰤮", //An empty format will hide the module.
+    "max-length": 50,
+  },
+  "wireplumber": {
+    "format": "{volume}%",
+    "format-muted": "",
+    "max-volume": 150,
+    "scroll-step": 0.2,
+  },
+  "bluetooth": {
+    "format": "",
+  },
+  "hyprland/language": {
+    "format-en": "EN",
+    "format-fr": "FR",
+  },
+  "hyprland/workspaces": {
+    "persistent-workspaces": {
+      "*": [1, 2, 3, 4, 5, 6, 7, 8],
+    },
+  },
+  "custom/notification": {
+    "tooltip": false,
+    "format": "{icon}",
+    "format-icons": {
+      "notification": "<span foreground='red'><sup></sup></span>",
+      "none": "",
+      "dnd-notification": "<span foreground='red'><sup></sup></span>",
+      "dnd-none": "",
+      "inhibited-notification": "<span foreground='red'><sup></sup></span>",
+      "inhibited-none": "",
+      "dnd-inhibited-notification": "<span foreground='red'><sup></sup></span>",
+      "dnd-inhibited-none": "",
+    },
+    "return-type": "json",
+    "exec-if": "which swaync-client",
+    "exec": "swaync-client -swb",
+    "on-click": "swaync-client -t -sw",
+    "on-click-right": "swaync-client -d -sw",
+    "escape": true,
+  },
+}
