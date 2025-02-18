@@ -8,7 +8,10 @@ return {
         },
       },
       nesting_rules = {
-        ["cs"] = { "Request.cs", "Response.cs" },
+        ["cs"] = {
+          pattern = "(.*)%.cs",
+          files = { "%1.Request.cs", "%1.Response.cs" },
+        },
       },
     },
   },
