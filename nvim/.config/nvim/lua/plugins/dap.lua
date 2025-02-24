@@ -51,7 +51,7 @@ return {
             end
 
             local files = vim.tbl_keys(file_map)
-            local choice = vim.ui.select(files, { prompt = "Select:" }, function(choice)
+            vim.ui.select(files, { prompt = "Select:" }, function(choice)
               print(file_map[choice])
               coroutine.resume(coro, file_map[choice])
             end)
