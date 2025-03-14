@@ -8,6 +8,9 @@ if status is-interactive
     # Commands to run in interactive sessions can go here
 end
 
+function launch
+    $argv & disown && exit
+end
 
 function dup
     docker compose up -d
