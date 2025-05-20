@@ -25,10 +25,23 @@
 @define-color mantle #292c3c;
 @define-color crust #232634;
 
+* {
+    border: none;
+    font-family: Font Awesome, Roboto, Arial, sans-serif;
+    font-size: 13px;
+    border-radius: 20px;
+}
+
 window#waybar {
-  background: rgba(65, 69, 89, 0.5);
+  background: rgba(0,0,0,0);
   color: white;
-  margin: 5px;
+}
+
+.modules-right,
+.modules-center,
+.modules-left {
+  background: rgba(65, 69, 89, 0.5);
+  margin: 10px 10px 0 10px;
 }
 
 label.module {
@@ -42,6 +55,8 @@ label.module {
 #bluetooth.on {
   color: @green;
 }
+
+#clock {}
 
 #bluetooth.connected {
   color: @sapphire;
@@ -62,15 +77,19 @@ label.module {
 #workspaces button {
   color: white;
   border-radius: 0;
+  transition: all 200ms ease-in-out;
+  margin: 0 2px;
 }
 
-#workspaces button.hosting-monitor:not(.empty) {
-  border-bottom: solid white 2px;
-  transition: all 200ms ease-in-out;
+#workspaces button:not(.empty) {
+  /* border-bottom: solid white 2px; */
+  background-color: @surface1;
+  /* color: white; */
+  border-radius: 20px;
 }
 
 #workspaces button.active {
   color: #363838;
   background-color: white;
-  transition: all 200ms ease-in-out;
+  border-radius: 20px;
 }
