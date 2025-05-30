@@ -6,6 +6,7 @@
   "modules-center": [],
   "modules-right": [
     "network",
+    "tray",
     "wireplumber",
     "bluetooth",
     "battery",
@@ -31,6 +32,7 @@
     "format-wifi": "󰤥",
     "format-disconnected": "󰤮", //An empty format will hide the module.
     "max-length": 50,
+    "on-click": "nm-applet --indicator"
   },
   "wireplumber": {
     "format": "{volume}%",

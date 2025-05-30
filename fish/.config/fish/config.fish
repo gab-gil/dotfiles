@@ -20,7 +20,6 @@ function mgdir
     mkdir $argv[1] && cd $argv[1]
 end
 
-
 function starship_transient_prompt_func
     starship module character
 end
@@ -28,5 +27,11 @@ end
 starship init fish | source
 enable_transience
 
-
 pyenv init - | source
+
+# pnpm
+set -gx PNPM_HOME "/home/gabgil/.local/share/pnpm"
+if not string match -q -- $PNPM_HOME $PATH
+    set -gx PATH "$PNPM_HOME" $PATH
+end
+# pnpm end
