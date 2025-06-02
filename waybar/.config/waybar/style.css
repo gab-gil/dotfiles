@@ -84,7 +84,7 @@ label.module {
 
 #workspaces button:not(.empty) {
   /* border-bottom: solid white 2px; */
-  background-color: @surface1;
+  background-color: @mantle;
   /* color: white; */
   border-radius: 20px;
 }
