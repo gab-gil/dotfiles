@@ -24,10 +24,21 @@ function starship_transient_prompt_func
     starship module character
 end
 
+function fzf_cd
+    set dir (zoxide query -l | fzf)
+    if test -n "$dir"
+        cd "$dir"
+        commandline -f repaint
+    end
+end
+
 starship init fish | source
+zoxide init fish | source
 enable_transience
 
 pyenv init - | source
+
+bind \cf fzf_cd
 
 # pnpm
 set -gx PNPM_HOME "/home/gabgil/.local/share/pnpm"
