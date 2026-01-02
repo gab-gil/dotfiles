@@ -1,5 +1,6 @@
 {
   "extras": [
+    "lazyvim.plugins.extras.coding.yanky",
     "lazyvim.plugins.extras.dap.core",
     "lazyvim.plugins.extras.lang.angular",
     "lazyvim.plugins.extras.lang.astro",
@@ -21,6 +22,7 @@
     "lazyvim.plugins.extras.lang.typescript",
     "lazyvim.plugins.extras.lang.vue",
     "lazyvim.plugins.extras.lang.yaml",
+    "lazyvim.plugins.extras.lang.zig",
     "lazyvim.plugins.extras.util.rest"
   ],
   "install_version": 8,
