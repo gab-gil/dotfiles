@@ -6,6 +6,8 @@ return {
       vim.g.VM_show_warnings = 0
       vim.g.VM_silent_exit = 1
       vim.g.VM_maps = {
+        ["Add Cursor Up"] = "<M-Up>",
+        ["Add Cursor Down"] = "<M-Down>",
         ["Goto Next"] = "]v",
         ["Goto Prev"] = "[v",
         ["I CtrlB"] = "<M-b>",

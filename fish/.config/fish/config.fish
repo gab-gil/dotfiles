@@ -1,6 +1,6 @@
 if status is-login
     if test -z "$DISPLAY" -a "$XDG_VTNR" = 1
-        exec hyprland
+        exec start-hyprland
     end
 end
 
@@ -18,6 +18,15 @@ end
 
 function mgdir
     mkdir $argv[1] && cd $argv[1]
+end
+
+function y
+    set tmp (mktemp -t "yazi-cwd.XXXXXX")
+    yazi $argv --cwd-file="$tmp"
+    if set cwd (cat -- $tmp); and [ -n "$cwd" ]; and [ "$cwd" != "$PWD" ]
+        cd -- "$cwd"
+    end
+    rm -f -- $tmp
 end
 
 function starship_transient_prompt_func
