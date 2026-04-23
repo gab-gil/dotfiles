@@ -3,41 +3,17 @@
 -- Add any additional keymaps here
 -- In your snacks config or keymaps
 
-vim.keymap.set("n", "<leader>rc", function()
-  local items = vim.fn.systemlist("history")
+local map = vim.keymap.set
+local opts = { noremap = true, silent = true }
 
-  local finder_items = {}
-  for idx, item in ipairs(items) do
-    local text = item
-    table.insert(finder_items, {
-      formatted = text,
-      text = idx .. " " .. text,
-      item = item,
-      idx = idx,
-    })
-  end
+opts.desc = "Workspace Symbols"
+map("n", "fs", function()
+  Snacks.picker.lsp_workspace_symbols({ filter = LazyVim.config.kind_filter })
+end, opts)
 
-  return Snacks.picker.pick({
-    source = "Command History",
-    items = finder_items,
-    format = Snacks.picker.format.ui_select(nil, #items),
-    title = "Command History",
-    layout = {
-      preview = false,
-      layout = {
-        height = math.floor(math.min(vim.o.lines * 0.8 - 10, #items + 2) + 0.5),
-      },
-    },
-    actions = {
-      confirm = function(picker, item)
-        picker:close()
-        vim.schedule(function()
-          vim.cmd(":tabnew | setlocal buftype=nofile | r !" .. item.item)
-        end)
-      end,
-    },
-    sort = function(a, b)
-      return a.idx < b.idx
-    end,
+opts.desc = "Workspace Class and Interface symbols"
+map("n", "fS", function()
+  Snacks.picker.lsp_workspace_symbols({
+    filter = { default = { "Class", "Interface" } },
   })
-end, { desc = "Run command (history)" })
+end, opts)
