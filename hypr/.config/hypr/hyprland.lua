@@ -39,6 +39,7 @@
 -- require("envs.home")
 require("envs.work")
 -- require("envs.react")
+-- require("envs.nereis")
 
 hl.device({
 	name = "wacom-intuos-s-pen",
@@ -379,7 +380,7 @@ hl.bind(mainMod .. " + " .. "mouse_up", hl.dsp.focus({ workspace = "e-1" }))
 
 -- Custom ones
 
-hl.bind(mainMod .. " + " .. "R", hl.dsp.exec_cmd("fuzzel"))
+hl.bind(mainMod .. " + " .. "R", hl.dsp.exec_cmd("noctalia msg panel-toggle launcher"))
 
 hl.bind(mainMod .. " + " .. "ALT" .. " + " .. "L", hl.dsp.exec_cmd("hyprlock"))
 
@@ -480,5 +481,8 @@ hl.bind("XF86AudioPrev", hl.dsp.exec_cmd("playerctl previous"), { locked = true 
 
 -- Autostart
 hl.on("hyprland.start", function()
-	hl.exec_cmd("waybar & swaync & hyprpaper")
+	hl.exec_cmd("noctalia")
 end)
+-- hl.on("hyprland.start", function()
+-- 	hl.exec_cmd("waybar & swaync & hyprpaper")
+-- end)
